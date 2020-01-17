@@ -48,14 +48,14 @@ public class FCFS {
                 } 
             }
 
-            for(int i = 0; i < holdQueue.size(); i++) {
-                holdQueue.get(i).increaseWaitingTime();
-            }
-
             if((activeQueue.size() == 0)&&(holdQueue.size() > 0)) {
                 holdQueue.get(0).status = 2;
                 activeQueue.add(holdQueue.get(0));
                 holdQueue.remove(0);
+            }
+
+            for(int i = 0; i < holdQueue.size(); i++) {
+                holdQueue.get(i).increaseWaitingTime();
             }
 
             if(activeQueue.size() == 0) {
