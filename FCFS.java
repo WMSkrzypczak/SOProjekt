@@ -22,7 +22,21 @@ public class FCFS {
         int finishedCheck = 0;
         int inProcessTime;
         while(true) {
+            if(activeQueue.size() > 0) {
+                inProcessTime = (this.time - activeQueue.get(0).enterTime) - activeQueue.get(0).waitingTime;
+                if(inProcessTime == activeQueue.get(0).executeTime) {
+                    activeQueue.get(0).status = 3;
+                    activeQueue.remove(0);
+                    finishedCheck++;
+                }
+            }
+
+            if (finishedCheck == this.fcfsProcessess.size()) {
+                break;
+            }
+
             processCheck = true;
+
             for(int i = 0; i < this.fcfsProcessess.size(); i++) {
                 if(this.fcfsProcessess.get(i).enterTime == this.time) {
                     this.fcfsProcessess.get(i).status = 1;
@@ -42,7 +56,7 @@ public class FCFS {
                     {
                         public int compare(Process p1, Process p2)
                             {
-                                return Integer.valueOf(p2.enterTime).compareTo(p1.enterTime);
+                                return Integer.valueOf(p1.enterTime).compareTo(p2.enterTime);
                             }
                     });
                 } 
@@ -64,18 +78,6 @@ public class FCFS {
                 this.diagram.add(activeQueue.get(0).prTag);
             }
 
-            if(activeQueue.size() > 0) {
-                inProcessTime = (this.time - activeQueue.get(0).enterTime) - activeQueue.get(0).waitingTime;
-                if(inProcessTime == activeQueue.get(0).executeTime) {
-                    activeQueue.get(0).status = 3;
-                    activeQueue.remove(0);
-                    finishedCheck++;
-                }
-            }
-
-            if (finishedCheck == this.fcfsProcessess.size()) {
-                break;
-            }
             this.time++;
         }
     }
