@@ -9,9 +9,7 @@ public class ProcesMain {
     public static void main (String[] args) {
         ProcesMain Simulation = new ProcesMain();
         Simulation.addProcessEx();
-        FCFS fcfs = new FCFS(Simulation.processList);
-        fcfs.algorithm();
-        Simulation.drawGantt(fcfs.diagram);
+        Simulation.askForAlgorithm();
     }
 
     ProcesMain () {
@@ -69,7 +67,42 @@ public class ProcesMain {
 
     private void drawGantt (ArrayList<Integer> gantt) {
         for (int i = 0; i < gantt.size(); i++) {
-            System.out.println(i+1 + "ms " + gantt.get(i));
+            System.out.println(i + "ms " + gantt.get(i));
         }
     }
+
+    private void askForAlgorithm () {
+        System.out.println("Jakiego algorytmu chcesz użyć?");
+        System.out.println("1: FCFS");
+        System.out.println("2: SJF");
+        Scanner scan = new Scanner (System.in);
+        int choice = scan.next().charAt(0);
+        switch(choice){
+            case '1':
+            runFCFS (this.processList);
+            break;
+
+            case '2':
+            runSJF (this.processList);
+            break;
+
+            default:
+            System.out.println("Wcisnij 1/2");
+            choice = scan.next().charAt(0);
+            break;
+        }
+    }
+
+    private void runFCFS (ArrayList<Process> prList) {
+        FCFS fcfs = new FCFS(prList);
+        fcfs.algorithm();
+        drawGantt(fcfs.diagram);
+    }
+    
+    private void runSJF (ArrayList<Process> prList) {
+        SJF sjf = new SJF(prList);
+        sjf.algorithm();
+        drawGantt(sjf.diagram);
+    }
+        
 }
