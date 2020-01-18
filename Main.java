@@ -1,18 +1,18 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class ProcesMain {
+public class Main {
 
     private ArrayList<Process> processList;
     private int processNumber;
 
     public static void main (String[] args) {
-        ProcesMain Simulation = new ProcesMain();
+        Main Simulation = new Main();
         Simulation.addProcessEx();
         Simulation.askForAlgorithm();
     }
 
-    ProcesMain () {
+    Main () {
         ArrayList<Process> processess = new ArrayList<>();
         this.processList = processess;
         this.processNumber = 0;
@@ -67,7 +67,7 @@ public class ProcesMain {
 
     private void drawGantt (ArrayList<Integer> gantt) {
         for (int i = 0; i < gantt.size(); i++) {
-            System.out.println(i + "ms " + gantt.get(i));
+            System.out.println(i+1 + "ms " + gantt.get(i));
         }
     }
 
@@ -75,6 +75,7 @@ public class ProcesMain {
         System.out.println("Jakiego algorytmu chcesz użyć?");
         System.out.println("1: FCFS");
         System.out.println("2: SJF");
+        System.out.println("3. RR");
         Scanner scan = new Scanner (System.in);
         int choice = scan.next().charAt(0);
         switch(choice){
@@ -86,8 +87,11 @@ public class ProcesMain {
             runSJF (this.processList);
             break;
 
+            case '3':
+            runRR (this.processList);
+            break;
             default:
-            System.out.println("Wcisnij 1/2");
+            System.out.println("Wcisnij 1/2/3");
             choice = scan.next().charAt(0);
             break;
         }
@@ -103,6 +107,15 @@ public class ProcesMain {
         SJF sjf = new SJF(prList);
         sjf.algorithm();
         drawGantt(sjf.diagram);
+    }
+
+    private void runRR (ArrayList<Process> prList) {
+        System.out.println("Podaj kwant czasu: ");
+        Scanner scan = new Scanner (System.in);
+        int qTime = scan.nextInt();
+        RR rr = new RR(prList, qTime);
+        rr.algorithm();
+        drawGantt(rr.diagram);
     }
         
 }
