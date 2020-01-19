@@ -67,7 +67,7 @@ public class Main {
 
     private void drawGantt (ArrayList<Integer> gantt) {
         for (int i = 0; i < gantt.size(); i++) {
-            System.out.println(i+1 + "ms " + gantt.get(i));
+            System.out.print(gantt.get(i) + " ");
         }
     }
 
@@ -76,6 +76,7 @@ public class Main {
         System.out.println("1: FCFS");
         System.out.println("2: SJF");
         System.out.println("3. RR");
+        System.out.println("4. Priority aging");
         Scanner scan = new Scanner (System.in);
         int choice = scan.next().charAt(0);
         switch(choice){
@@ -90,6 +91,11 @@ public class Main {
             case '3':
             runRR (this.processList);
             break;
+
+            case '4':
+            runPA (this.processList);
+            break;
+
             default:
             System.out.println("Wcisnij 1/2/3");
             choice = scan.next().charAt(0);
@@ -116,6 +122,12 @@ public class Main {
         RR rr = new RR(prList, qTime);
         rr.algorithm();
         drawGantt(rr.diagram);
+    }
+
+    private void runPA (ArrayList<Process> prList) {
+        PA pa = new PA(prList);
+        pa.algorithm();
+        drawGantt(pa.diagram);
     }
         
 }
