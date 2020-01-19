@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -109,7 +110,20 @@ public class Main {
     }
 
     private void addDefaultData () {
-        
+        try {
+            int enTime;
+            int exTime;
+            int pr;
+
+            for(int i = 1; i <= 10; i++) {
+                enTime = Integer.parseInt(Files.readAllLines(Paths.get("dane.txt")).get((i*4)-3));
+                exTime = Integer.parseInt(Files.readAllLines(Paths.get("dane.txt")).get((i*4)-2));
+                pr = Integer.parseInt(Files.readAllLines(Paths.get("dane.txt")).get((i*4)-1));
+                addProcessToList(enTime, exTime, pr, i);
+            }
+        } catch (IOException ioe) {
+            System.out.println("Unable to read from file.");
+        }
     }
 
     private void askForAlgorithm () {
@@ -223,7 +237,7 @@ public class Main {
 
     private void printDoc (ArrayList<Integer> gantt, ArrayList<Process> prList, String type) {
         try (
-        FileWriter fw = new FileWriter("./Data/" + type + "Out.txt");
+        FileWriter fw = new FileWriter("./" + type + "Out.txt");
         BufferedWriter bw = new BufferedWriter(fw);
         PrintWriter out = new PrintWriter(bw)){
             out.println(" ");
