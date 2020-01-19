@@ -9,8 +9,8 @@ public class Process {
 
     public int exitTime;
     public int waitingTime;
-    public int maxTime;
     public int remainTime;
+    public int fluidPriority;
 
     Process(int enTime, int exeTime, int pr, int tag) {
         this.enterTime = enTime;
@@ -21,8 +21,8 @@ public class Process {
         this.status = 0;
         this.exitTime = 0;
         this.waitingTime = 0;
-        this.maxTime = 0;
         this.remainTime = exeTime;
+        this.fluidPriority = pr;
     }
 
     public void increaseWaitingTime () {
@@ -38,7 +38,7 @@ public class Process {
     }
 
     public int getMaxTime () {
-        this.maxTime = this.exitTime - this.enterTime;
-        return this.maxTime;
+        int maxTime = this.exitTime - this.enterTime;
+        return maxTime;
     }
 }

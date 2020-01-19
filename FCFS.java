@@ -14,7 +14,7 @@ public class FCFS {
         this.finishedQueue = finishedQueue;
         ArrayList<Integer> diagram = new ArrayList<>();
         this.diagram = diagram;
-        this.time = 1;
+        this.time = 0;
         this.fcfsProcessess = fcfsPr;
     }
 
@@ -23,10 +23,6 @@ public class FCFS {
         ArrayList<Process> activeQueue = new ArrayList<>();
         int finishedCheck = 0;
         while(true) {
-
-            for(int i = 0; i < holdQueue.size(); i++) {
-                holdQueue.get(i).increaseWaitingTime();
-            }
 
             if(activeQueue.size() > 0) {
                 activeQueue.get(0).decreaseRemainTime();
@@ -65,6 +61,10 @@ public class FCFS {
                 holdQueue.remove(0);
             }
 
+            for(int i = 0; i < holdQueue.size(); i++) {
+                holdQueue.get(i).increaseWaitingTime();
+            }
+
             if(activeQueue.size() == 0) {
                 this.diagram.add(0);
             } else {
@@ -73,5 +73,13 @@ public class FCFS {
 
             this.time++;
         }
+
+        Collections.sort(this.finishedQueue, new Comparator<Process>()
+        {
+            public int compare(Process p1, Process p2)
+                {
+                    return Integer.valueOf(p1.prTag).compareTo(p2.prTag);
+                }
+        });
     }
 }

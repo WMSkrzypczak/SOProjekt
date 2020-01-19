@@ -14,7 +14,7 @@ public class SJF {
         this.finishedQueue = finishedQueue;
         ArrayList<Integer> diagram = new ArrayList<>();
         this.diagram = diagram;
-        this.time = 1;
+        this.time = 0;
         this.sjfProcessess = sjfPr;
     }
 
@@ -23,10 +23,6 @@ public class SJF {
         ArrayList<Process> activeQueue = new ArrayList<>();
         while(true) {
             
-            for(int i = 0; i < holdQueue.size(); i++) {
-                holdQueue.get(i).increaseWaitingTime();
-            }
-
             if(activeQueue.size() > 0) {
                 activeQueue.get(0).decreaseRemainTime();
                 if(activeQueue.get(0).remainTime == 0) {
@@ -40,7 +36,7 @@ public class SJF {
             if (this.finishedQueue.size() == this.sjfProcessess.size()) {
                 break;
             }
-
+            
             for(int i = 0; i < this.sjfProcessess.size(); i++) {
                 if(this.sjfProcessess.get(i).enterTime == this.time) {
                     this.sjfProcessess.get(i).status = 1;
@@ -63,6 +59,10 @@ public class SJF {
                 activeQueue.add(holdQueue.get(0));
                 holdQueue.remove(0);
             }
+            
+            for(int i = 0; i < holdQueue.size(); i++) {
+                holdQueue.get(i).increaseWaitingTime();
+            }
 
             if(activeQueue.size() == 0) {
                 this.diagram.add(0);
@@ -72,5 +72,13 @@ public class SJF {
 
             this.time++;
         }
+
+        Collections.sort(this.finishedQueue, new Comparator<Process>()
+        {
+            public int compare(Process p1, Process p2)
+                {
+                    return Integer.valueOf(p1.prTag).compareTo(p2.prTag);
+                }
+        });
     }
 }

@@ -14,7 +14,7 @@ public class PA {
         this.finishedQueue = finishedQueue;
         ArrayList<Integer> diagram = new ArrayList<>();
         this.diagram = diagram;
-        this.time = 1;
+        this.time = 0;
         this.paProcessess = paPr;
     }
 
@@ -23,10 +23,6 @@ public class PA {
         ArrayList<Process> activeQueue = new ArrayList<>();
         int finishedCheck = 0;
         while(true) {
-
-            for(int i = 0; i < holdQueue.size(); i++) {
-                holdQueue.get(i).increaseWaitingTime();
-            }
 
             if(activeQueue.size() > 0) {
                 activeQueue.get(0).decreaseRemainTime();
@@ -47,19 +43,19 @@ public class PA {
                     this.paProcessess.get(i).status = 1;
                     holdQueue.add(this.paProcessess.get(i));
                 }
-            }  
+            }
 
             if(holdQueue.size() >= 1) {
                 for(int i = 0; i < holdQueue.size(); i++) {
-                    if(((holdQueue.get(i).waitingTime % 10) == 0)&&(holdQueue.get(i).priority > 1)) {
-                        holdQueue.get(i).priority--;
+                    if(((holdQueue.get(i).waitingTime % 10) == 0)&&(holdQueue.get(i).fluidPriority > 1)) {
+                        holdQueue.get(i).fluidPriority--;
                     }
                 }
                 Collections.sort(holdQueue, new Comparator<Process>()
                 {
                     public int compare(Process p1, Process p2)
                         {
-                            return Integer.valueOf(p1.priority).compareTo(p2.priority);
+                            return Integer.valueOf(p1.fluidPriority).compareTo(p2.fluidPriority);
                         }
                 });
             } 
@@ -70,6 +66,10 @@ public class PA {
                 holdQueue.remove(0);
             }
 
+            for(int i = 0; i < holdQueue.size(); i++) {
+                holdQueue.get(i).increaseWaitingTime();
+            }  
+
             if(activeQueue.size() == 0) {
                 this.diagram.add(0);
             } else {
@@ -78,5 +78,13 @@ public class PA {
 
             this.time++;
         }
+
+        Collections.sort(this.finishedQueue, new Comparator<Process>()
+        {
+            public int compare(Process p1, Process p2)
+                {
+                    return Integer.valueOf(p1.prTag).compareTo(p2.prTag);
+                }
+        });
     }
 }

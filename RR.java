@@ -15,7 +15,7 @@ public class RR {
         this.finishedQueue = finishedQueue;
         ArrayList<Integer> diagram = new ArrayList<>();
         this.diagram = diagram;
-        this.time = 1;
+        this.time = 0;
         this.rrProcessess = rrPr;
         this.qTime = qTime;
     }
@@ -23,12 +23,8 @@ public class RR {
     public void algorithm() {
         ArrayList<Process> holdQueue = new ArrayList<>();
         ArrayList<Process> activeQueue = new ArrayList<>();
-        int counter = 1;
+        int counter = 0;
         while(true) {
-
-            for(int i = 0; i < holdQueue.size(); i++) {
-                holdQueue.get(i).increaseWaitingTime();
-            }
 
             if(activeQueue.size() > 0) {
                 activeQueue.get(0).decreaseRemainTime();
@@ -39,7 +35,7 @@ public class RR {
                     activeQueue.remove(0);
                 }
 
-                if (counter == this.qTime) {
+                if (counter == (this.qTime-1)) {
                     activeQueue.get(0).status = 1;
                     holdQueue.add(activeQueue.get(0));
                     activeQueue.remove(0);
@@ -70,8 +66,12 @@ public class RR {
             if((activeQueue.size() == 0)&&(holdQueue.size() > 0)) {
                 holdQueue.get(0).status = 2;
                 activeQueue.add(holdQueue.get(0));
-                counter=1;
+                counter=0;
                 holdQueue.remove(0);
+            }
+
+            for(int i = 0; i < holdQueue.size(); i++) {
+                holdQueue.get(i).increaseWaitingTime();
             }
 
             if(activeQueue.size() == 0) {
@@ -82,5 +82,13 @@ public class RR {
 
             this.time++;
         }
+
+        Collections.sort(this.finishedQueue, new Comparator<Process>()
+        {
+            public int compare(Process p1, Process p2)
+                {
+                    return Integer.valueOf(p1.prTag).compareTo(p2.prTag);
+                }
+        });
     }
 }
